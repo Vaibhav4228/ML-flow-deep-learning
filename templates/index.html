@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chest Cancer Classification</title>
+    <title>Cancer Classification</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -42,14 +42,16 @@
         }
 
         .btn-upload,
-        .btn-predict {
-            width: 48%;
+        .btn-predict,
+        .btn-train {
+            width: 30%;
             font-weight: 600;
             transition: transform 0.2s;
         }
 
         .btn-upload:hover,
-        .btn-predict:hover {
+        .btn-predict:hover,
+        .btn-train:hover {
             transform: scale(1.05);
         }
 
@@ -103,12 +105,6 @@
             max-height: 200px;
             overflow-y: auto;
         }
-
-        .results-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
     </style>
 </head>
 
@@ -126,9 +122,10 @@
                     <img src="" id="photo" style="display:none;" class="w-100 h-100" />
                     <canvas id="canvas" style="display:none;"></canvas>
                 </div>
-                <div class="d-flex justify-content-between mt-3">
+                <div class="d-flex justify-content-between mt-3 w-100">
                     <button id="uload" class="btn btn-primary btn-upload">Upload</button>
                     <button id="send" class="btn btn-success btn-predict">Predict</button>
+                    <button id="train" class="btn btn-secondary btn-train">Train</button>
                 </div>
                 <input type="file" id="fileinput" style="display:none;" />
                 <input type="hidden" id="url" value="/predict" />
@@ -172,9 +169,25 @@
                 }
             });
         }
+        function trainModel() {
+            $('#loading').css('visibility', 'visible');
+            $.ajax({
+                url: '/train',
+                type: 'GET',
+                success: msg => {
+                    $('#loading').css('visibility', 'hidden');
+                    alert(msg);
+                },
+                error: () => {
+                    $('#loading').css('visibility', 'hidden');
+                    alert('Training failed.');
+                }
+            });
+        }
         $(function () {
             $('#uload').click(() => $('#fileinput').click());
             $('#send').click(() => sendRequest(base_data));
+            $('#train').click(() => trainModel());
             $('#fileinput').change(function () {
                 const file = this.files[0]; if (!file) return;
                 const reader = new FileReader();
