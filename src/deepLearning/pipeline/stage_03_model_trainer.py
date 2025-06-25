@@ -1,8 +1,10 @@
+import mlflow
+import mlflow.tensorflow 
 from deepLearning.config.configuration import ConfigurationManager
 from deepLearning.components.model_trainer import Training
 from deepLearning import logger
 
-
+mlflow.keras.autolog()
 
 
 STAGE_NAME = "Training"
