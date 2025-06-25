@@ -4,9 +4,8 @@ from deepLearning import logger
 
 
 
+
 STAGE_NAME = "Training"
-
-
 
 class ModelTrainingPipeline:
     def __init__(self):
@@ -18,9 +17,7 @@ class ModelTrainingPipeline:
         training = Training(config=training_config)
         training.get_base_model()
         training.train_valid_generator()
-        training.train()
-
-
+        training.train()   
 
 if __name__ == '__main__':
     try:
@@ -32,4 +29,3 @@ if __name__ == '__main__':
     except Exception as e:
         logger.exception(e)
         raise e
-        
